@@ -16,6 +16,8 @@
 		C820AC5029C1848A005DDAC7 /* EmoDiaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C820AC4F29C1848A005DDAC7 /* EmoDiaryTests.swift */; };
 		C820AC5A29C1848A005DDAC7 /* EmoDiaryUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C820AC5929C1848A005DDAC7 /* EmoDiaryUITests.swift */; };
 		C820AC5C29C1848A005DDAC7 /* EmoDiaryUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C820AC5B29C1848A005DDAC7 /* EmoDiaryUITestsLaunchTests.swift */; };
+		C8C3434129CADF3100CDC0BE /* PostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C3434029CADF3100CDC0BE /* PostController.swift */; };
+		C8C3434329CADFA200CDC0BE /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8C3434229CADFA200CDC0BE /* PostView.swift */; };
 		C8CA451D29C812BA004EE516 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CA451C29C812BA004EE516 /* MainView.swift */; };
 		C8CA456329C827A8004EE516 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8CA456229C827A8004EE516 /* DataModel.swift */; };
 /* End PBXBuildFile section */
@@ -51,6 +53,8 @@
 		C820AC5529C1848A005DDAC7 /* EmoDiaryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EmoDiaryUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C820AC5929C1848A005DDAC7 /* EmoDiaryUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmoDiaryUITests.swift; sourceTree = "<group>"; };
 		C820AC5B29C1848A005DDAC7 /* EmoDiaryUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmoDiaryUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		C8C3434029CADF3100CDC0BE /* PostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostController.swift; sourceTree = "<group>"; };
+		C8C3434229CADFA200CDC0BE /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		C8CA451C29C812BA004EE516 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		C8CA456229C827A8004EE516 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -145,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				C8CA451C29C812BA004EE516 /* MainView.swift */,
+				C8C3434229CADFA200CDC0BE /* PostView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -153,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				C820AC3929C18489005DDAC7 /* MainController.swift */,
+				C8C3434029CADF3100CDC0BE /* PostController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -291,6 +297,8 @@
 				C820AC3629C18489005DDAC7 /* AppDelegate.swift in Sources */,
 				C820AC3829C18489005DDAC7 /* SceneDelegate.swift in Sources */,
 				C8CA456329C827A8004EE516 /* DataModel.swift in Sources */,
+				C8C3434129CADF3100CDC0BE /* PostController.swift in Sources */,
+				C8C3434329CADFA200CDC0BE /* PostView.swift in Sources */,
 				C8CA451D29C812BA004EE516 /* MainView.swift in Sources */,
 				C820AC4029C18489005DDAC7 /* EmoDiary.xcdatamodeld in Sources */,
 			);
