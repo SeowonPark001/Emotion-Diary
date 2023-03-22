@@ -32,7 +32,7 @@ class PostView : UIView {
     // 해당 날짜 표시
     let dateView: UILabel = {
         let label = UILabel()
-        label.text = "YYYY.MM.DD"
+        label.text = " "
         label.font = .boldSystemFont(ofSize: 16)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -60,10 +60,13 @@ class PostView : UIView {
     }()
     
     // ✏️작성란
-    let review: UITextView = {
+    let textViewPlaceHolder = "오늘의 감정, 있었던 일들을 간단하게 남겨보세요."
+    
+    lazy var review: UITextView = {
         let tv = UITextView()
         tv.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15) // 테두리-텍스트 간 여백
-        tv.text = "오늘의 감정, 있었던 일들을 간단하게 남겨보세요."
+        tv.text = textViewPlaceHolder
+        // tv.delegate = self // 컨트롤러에서 Delegate 사용
         tv.textColor = .gray
         tv.font = .systemFont(ofSize: 17)
         tv.layer.borderWidth = 1
