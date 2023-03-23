@@ -23,7 +23,7 @@ class PostView : UIView {
     // 📅 캘린더 아이콘 - 날짜 선택
     let calendar: UIImageView = {
         let img = UIImageView()
-        img.image = UIImage(named: "calendar_icon.png")
+        img.image = #imageLiteral(resourceName: "calendar_icon")
         img.contentMode = .scaleAspectFit
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
@@ -89,9 +89,9 @@ class PostView : UIView {
     // 🙂 기본 이모지 아이콘 - 감정 선택
     let emoji: UIImageView = {
         let img = UIImageView()
-        img.image = UIImage(named: "smile_icon.png")
+        img.image = #imageLiteral(resourceName: "smile_icon")
         img.contentMode = .scaleAspectFit
-        img.layer.opacity = 0.5
+        // img.layer.opacity = 0.5
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
@@ -120,9 +120,9 @@ class PostView : UIView {
     // 📸 카메라 아이콘 - 사진 선택
     let camera: UIImageView = {
         let img = UIImageView()
-        img.image = UIImage(named: "camera_icon.png") // #imageLiteral()
+        img.image = #imageLiteral(resourceName: "camera_icon")
         img.contentMode = .scaleAspectFit
-        img.layer.opacity = 0.5
+        // img.layer.opacity = 0.5
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
