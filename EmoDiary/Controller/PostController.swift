@@ -48,6 +48,10 @@ class PostController : BaseController{
     }
     
     func setTarget() {
+        // 하단 버튼 누르기
+        postView.cancelBtn.addTarget(self, action: #selector(cancelBtnTapped), for: .touchUpInside)
+        postView.summitBtn.addTarget(self, action: #selector(summitBtnTapped), for: .touchUpInside)
+        
         // 달력 아이콘 누르기
         postView.calendar.tag = 1
         self.postView.calendar.isUserInteractionEnabled = true
@@ -92,6 +96,11 @@ class PostController : BaseController{
     // 작성란 Place Holder 구현
     @objc private func didTapTextView(_ sender: Any) {
         view.endEditing(true)
+    }
+    
+    // 글자 제한수 업데이트
+    private func updateCountLabel(characterCount: Int) {
+        postView.textCounter.text = "\(characterCount)/150"
     }
 
     
@@ -151,6 +160,42 @@ class PostController : BaseController{
 
         self.present(actionSheet, animated: true, completion: nil)
     }
+    
+    // 작성 취소 버튼 눌렀을 때
+    @objc func cancelBtnTapped(){
+        print("취소 버튼 클릭")
+        
+        // Alert 팝업창
+        let alert = UIAlertController(title: "일기 작성 취소", message: "일기 작성을 취소하시겠습니까?", preferredStyle: .alert)
+        let success = UIAlertAction(title: "확인", style: .default) { action in
+            print("확인버튼이 눌렸습니다.")
+            // 메인화면으로 돌아가기
+        }
+        let cancel = UIAlertAction(title: "취소", style: .cancel) { action in
+            print("취소버튼이 눌렸습니다.")
+        }
+        alert.addAction(success)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    // 작성 완료 버튼 눌렀을 때
+    @objc func summitBtnTapped() {
+        print("작성 완료 버튼 클릭")
+        
+        // 등록을 완료하시겠습니까? << Alert 팝업창도 나중에 띄우기
+        let alert = UIAlertController(title: "일기 작성 확인", message: "작성한 일기를 등록하시겠습니까?", preferredStyle: .alert)
+        let success = UIAlertAction(title: "확인", style: .default) { action in
+            print("확인버튼이 눌렸습니다.")
+            // 메인화면으로 돌아가기 & 감정 및 일기 내용 메인화면에서 업데이트
+        }
+        let cancel = UIAlertAction(title: "취소", style: .cancel) { action in
+            print("취소버튼이 눌렸습니다.")
+        }
+        alert.addAction(success)
+        alert.addAction(cancel)
+        self.present(alert, animated: true, completion: nil)
+    }
 
 }
 
@@ -162,15 +207,37 @@ extension PostController: UITextViewDelegate {
             textView.textColor = .black
         }
     }
-
+    
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             textView.text = postView.textViewPlaceHolder
             textView.textColor = .lightGray
+            updateCountLabel(characterCount: 0)
         }
     }
-}
+    // 글자수 제한 표시
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        let inputString = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let oldString = textView.text, let newRange = Range(range, in: oldString) else { return true }
+        let newString = oldString.replacingCharacters(in: newRange, with: inputString).trimmingCharacters(in: .whitespacesAndNewlines)
 
+        let characterCount = newString.count
+        guard characterCount <= 150 else { return false }
+        updateCountLabel(characterCount: characterCount)
+
+        return true
+    }
+}
+// 글자수 제한 글씨체 색 - 작성란 place holder
+extension UILabel {
+    func asColor(targetString: String, color: UIColor?) {
+        let fullText = text ?? ""
+        let range = (fullText as NSString).range(of: targetString)
+        let attributedString = NSMutableAttributedString(string: fullText)
+        attributedString.addAttribute(.foregroundColor, value: color as Any, range: range)
+        attributedText = attributedString
+    }
+}
 
 // Delegate 패턴: 사진앨범/카메라 열기
 extension PostController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {

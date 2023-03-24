@@ -75,6 +75,16 @@ class PostView : UIView {
         return tv
     }()
     
+    // 작성란 글자수 제한 표시
+    lazy var textCounter: UILabel = {
+        let label = UILabel()
+        label.text = "0/150"
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = .lightGray
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     // 감정 라벨
     let emoLabel: UILabel = {
@@ -208,16 +218,17 @@ class PostView : UIView {
         
         backgroundColor = .white
         
-        configureUI()
+        setupView()
+        setUpConstraints()
     }
     
-    func configureUI() {
-        
-        // 만든 뷰/아이템 등록
+    func setupView() { // 만든 뷰/아이템 등록
         addSubview(stackView)
         shadow.addSubview(photo)
-
-        // 해당 뷰의 크기/위치 설정
+        review.addSubview(textCounter)
+    }
+    
+    func setUpConstraints() { // 해당 뷰의 크기/위치 설정
         NSLayoutConstraint.activate([
             
             // 전체 (스택) 뷰
@@ -235,6 +246,12 @@ class PostView : UIView {
             review.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             review.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
             review.heightAnchor.constraint(equalToConstant: 150),
+            
+            // 일기 글자수 제한 표시
+            textCounter.topAnchor.constraint(equalTo: review.bottomAnchor, constant: 128),
+            textCounter.leadingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -52),
+            textCounter.widthAnchor.constraint(equalToConstant: 50),
+            textCounter.heightAnchor.constraint(equalToConstant: 20),
             
             // 이모지 아이콘
             emoji.widthAnchor.constraint(equalToConstant: 22),
@@ -256,7 +273,7 @@ class PostView : UIView {
             
             // 버튼
             sview5.heightAnchor.constraint(equalToConstant: 50),
-            sview5.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            sview5.centerXAnchor.constraint(equalTo: centerXAnchor),
         
         ])
     }
