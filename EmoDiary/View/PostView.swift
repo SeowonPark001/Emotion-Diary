@@ -66,7 +66,6 @@ class PostView : UIView {
         let tv = UITextView()
         tv.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15) // 테두리-텍스트 간 여백
         tv.text = textViewPlaceHolder
-        // tv.delegate = self // 컨트롤러에서 Delegate 사용
         tv.textColor = .gray
         tv.font = .systemFont(ofSize: 17)
         tv.layer.borderWidth = 1

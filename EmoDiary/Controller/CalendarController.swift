@@ -8,6 +8,6 @@
 import UIKit
 
 
-class MainController : UIViewController {
+class CalendarController : BaseController {
     
 }

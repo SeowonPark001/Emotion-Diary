@@ -7,6 +7,6 @@
 
 import UIKit
 
-class MainView :  UIView {
+class CalendarView :  UIView {
     
 }

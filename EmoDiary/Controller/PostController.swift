@@ -7,34 +7,47 @@
 
 import UIKit
 
-class PostController : UIViewController{
+class PostController : BaseController{
     
-    let postView = PostView()   // 연결할 View 이름
+    let postView = PostView() // 연결할 View 이름
     
-    // 감정 배열
-    let emotionArray :[String] = ["Neutral", "Happy", "Touched", "Sad", "Hopeless", "Angry"]
-    let emojiArray :[String] = ["😐", "😆", "🥹", "😢", "😱", "😡"]
+    let imgPicker = UIImagePickerController()
     
-    let picker = UIImagePickerController()
+    override func loadView() {
+        view = postView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // 네이게이션 바
-        self.navigationItem.title = "감정 일기 작성하기"
+        setNavigationBar()
+        setTarget()
+        setDelegate()
+        
+        configureDate()
+    }
+    
+    func setNavigationBar() {
+        title = "감정 일기 작성"
+        
         let navi = UINavigationBarAppearance()
+        navi.configureWithOpaqueBackground()
         navi.backgroundColor = UIColor(named: "Medium")
+        navi.titleTextAttributes = [.foregroundColor: UIColor.white] // 글씨색
+
         let naviCtrl = navigationController?.navigationBar
-        naviCtrl!.standardAppearance = navi
-        naviCtrl!.scrollEdgeAppearance = navi
+        naviCtrl?.standardAppearance = navi
+        naviCtrl?.scrollEdgeAppearance = navi
         
-        configureDate() // 오늘 날짜 출력
+        navigationController?.setNeedsStatusBarAppearanceUpdate()
+        navigationController?.navigationBar.isTranslucent = false
         
-        // 작성란 place holder 구현
-        postView.review.delegate = self
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapTextView(_:)))
-        view.addGestureRecognizer(tapGesture)
-        
+        navigationItem.scrollEdgeAppearance = navi
+        navigationItem.standardAppearance = navi
+        navigationItem.compactAppearance = navi
+    }
+    
+    func setTarget() {
         // 달력 아이콘 누르기
         postView.calendar.tag = 1
         self.postView.calendar.isUserInteractionEnabled = true
@@ -54,16 +67,35 @@ class PostController : UIViewController{
         postView.photo.tag = 4
         self.postView.photo.isUserInteractionEnabled = true
         self.postView.photo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.imgViewTapped)))
-    
         
-        picker.delegate = self
+        // 텍스트뷰(작성란) 터치
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapTextView(_:)))
+        view.addGestureRecognizer(tapGesture)
     }
     
-    override func loadView() {
-        view = postView // 실행 시 해당 뷰로 연결
+    func setDelegate() {
+        postView.review.delegate = self
+        imgPicker.delegate = self
     }
     
-    // 이미지 뷰 눌렀을 때
+    // 해당 날짜 표시
+    func configureDate(){
+        let now = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY.MM.dd"
+        dateFormatter.timeZone = NSTimeZone(name: "ko_KR") as TimeZone?
+        let result = dateFormatter.string(from: now)
+        
+        postView.dateView.text = result
+    }
+    
+    // 작성란 Place Holder 구현
+    @objc private func didTapTextView(_ sender: Any) {
+        view.endEditing(true)
+    }
+
+    
+    // 이미지뷰(아이콘) 눌렀을 때
     @objc func imgViewTapped(_ sender: UITapGestureRecognizer) {
         let tag = sender.view!.tag
         
@@ -84,33 +116,15 @@ class PostController : UIViewController{
         }
     }
     
-    // 텍스트뷰 눌렀을 때
-    @objc private func didTapTextView(_ sender: Any) {
-        view.endEditing(true)
-    }
-    
-    // 해당 날짜 출력
-    func configureDate(){ // PostView date label에 값을 할당
-        postView.dateView.text = getTodayDate()
-    }
-    
-    func getTodayDate() -> String { // Date -> String
-        let now = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY.MM.dd"
-        dateFormatter.timeZone = NSTimeZone(name: "ko_KR") as TimeZone?
-        return dateFormatter.string(from: now)
-    }
-    
     // 감정 액션 시트 출력
     func showEmojiSheet(_ sender: UITapGestureRecognizer) {
         let actionSheet = UIAlertController(title: "오늘의 감정", message: nil, preferredStyle: .actionSheet)
         
         for i in 0...5 { // 6가지 감정 넣기
             actionSheet.addAction(UIAlertAction(title: emojiArray[i], style: .default, handler: {(ACTION:UIAlertAction) in
-                print("\(self.emotionArray[i]) 감정 선택")
-                self.postView.emoji.image = UIImage(named: self.emotionArray[i]) // 해당 감정 이모티콘 출력
-            })) // style: .destructive => 빨간색 글씨
+                print("\(emotionArray[i]) 감정 선택")
+                self.postView.emoji.image = UIImage(named: emotionArray[i]) // 해당 감정 이모티콘 출력
+            }))
         }
         // 취소 버튼
         actionSheet.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
@@ -140,7 +154,7 @@ class PostController : UIViewController{
 
 }
 
-// Delegate 패턴: text view place holder
+// Delegate 패턴: Text View Place Holder
 extension PostController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == postView.textViewPlaceHolder {
@@ -162,13 +176,13 @@ extension PostController: UITextViewDelegate {
 extension PostController: UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     // 사진 앨범 열기
     func openLibrary() {
-        picker.sourceType = .photoLibrary
-        present(picker, animated: false, completion: nil)
+        imgPicker.sourceType = .photoLibrary
+        present(imgPicker, animated: false, completion: nil)
     }
     // 카메라 열기
     func openCamera() {
-        picker.sourceType = .camera
-        present(picker, animated: false, completion: nil)
+        imgPicker.sourceType = .camera
+        present(imgPicker, animated: false, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
