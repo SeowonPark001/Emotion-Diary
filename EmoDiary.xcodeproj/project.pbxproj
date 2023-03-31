@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		871345BE6A27B2CFC1058965 /* Pods_EmoDiaryTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DC944EDD16FFAF34BDFC865 /* Pods_EmoDiaryTests.framework */; };
+		BDFCF5E90FC682E9164EC661 /* Pods_EmoDiary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9AE80E17B0F1861C57D6C84 /* Pods_EmoDiary.framework */; };
+		BFC2B2BE058AB148B92984D6 /* Pods_EmoDiary_EmoDiaryUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D24D47F4285B390F985AE6F4 /* Pods_EmoDiary_EmoDiaryUITests.framework */; };
 		C820AC3629C18489005DDAC7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C820AC3529C18489005DDAC7 /* AppDelegate.swift */; };
 		C820AC3829C18489005DDAC7 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C820AC3729C18489005DDAC7 /* SceneDelegate.swift */; };
 		C820AC3A29C18489005DDAC7 /* CalendarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C820AC3929C18489005DDAC7 /* CalendarController.swift */; };
@@ -41,6 +44,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0AFD1AF8DF7F874E7D0A8892 /* Pods-EmoDiary-EmoDiaryUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmoDiary-EmoDiaryUITests.release.xcconfig"; path = "Target Support Files/Pods-EmoDiary-EmoDiaryUITests/Pods-EmoDiary-EmoDiaryUITests.release.xcconfig"; sourceTree = "<group>"; };
+		40E7772AD19C875AF1CC09F0 /* Pods-EmoDiary.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmoDiary.debug.xcconfig"; path = "Target Support Files/Pods-EmoDiary/Pods-EmoDiary.debug.xcconfig"; sourceTree = "<group>"; };
+		60A71C3807D7A2CAA32BDB4E /* Pods-EmoDiary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmoDiary.release.xcconfig"; path = "Target Support Files/Pods-EmoDiary/Pods-EmoDiary.release.xcconfig"; sourceTree = "<group>"; };
+		6595F08DDF21AFC69CF2D94E /* Pods-EmoDiaryTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmoDiaryTests.release.xcconfig"; path = "Target Support Files/Pods-EmoDiaryTests/Pods-EmoDiaryTests.release.xcconfig"; sourceTree = "<group>"; };
+		6DC944EDD16FFAF34BDFC865 /* Pods_EmoDiaryTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EmoDiaryTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9AE80E17B0F1861C57D6C84 /* Pods_EmoDiary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EmoDiary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C820AC3229C18489005DDAC7 /* EmoDiary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EmoDiary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C820AC3529C18489005DDAC7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C820AC3729C18489005DDAC7 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +68,9 @@
 		C8C3434229CADFA200CDC0BE /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		C8CA451C29C812BA004EE516 /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		C8CA456229C827A8004EE516 /* DataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModel.swift; sourceTree = "<group>"; };
+		CC19A46595CC731E0315D144 /* Pods-EmoDiaryTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmoDiaryTests.debug.xcconfig"; path = "Target Support Files/Pods-EmoDiaryTests/Pods-EmoDiaryTests.debug.xcconfig"; sourceTree = "<group>"; };
+		D24D47F4285B390F985AE6F4 /* Pods_EmoDiary_EmoDiaryUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EmoDiary_EmoDiaryUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBFBC4E258B1D2554964F231 /* Pods-EmoDiary-EmoDiaryUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmoDiary-EmoDiaryUITests.debug.xcconfig"; path = "Target Support Files/Pods-EmoDiary-EmoDiaryUITests/Pods-EmoDiary-EmoDiaryUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BDFCF5E90FC682E9164EC661 /* Pods_EmoDiary.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				871345BE6A27B2CFC1058965 /* Pods_EmoDiaryTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,12 +94,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFC2B2BE058AB148B92984D6 /* Pods_EmoDiary_EmoDiaryUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		131B897AFCAB29E0E35589D4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				40E7772AD19C875AF1CC09F0 /* Pods-EmoDiary.debug.xcconfig */,
+				60A71C3807D7A2CAA32BDB4E /* Pods-EmoDiary.release.xcconfig */,
+				DBFBC4E258B1D2554964F231 /* Pods-EmoDiary-EmoDiaryUITests.debug.xcconfig */,
+				0AFD1AF8DF7F874E7D0A8892 /* Pods-EmoDiary-EmoDiaryUITests.release.xcconfig */,
+				CC19A46595CC731E0315D144 /* Pods-EmoDiaryTests.debug.xcconfig */,
+				6595F08DDF21AFC69CF2D94E /* Pods-EmoDiaryTests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		8D4AAC362D2165E387D588A7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B9AE80E17B0F1861C57D6C84 /* Pods_EmoDiary.framework */,
+				D24D47F4285B390F985AE6F4 /* Pods_EmoDiary_EmoDiaryUITests.framework */,
+				6DC944EDD16FFAF34BDFC865 /* Pods_EmoDiaryTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C820AC2929C18489005DDAC7 = {
 			isa = PBXGroup;
 			children = (
@@ -93,6 +132,8 @@
 				C820AC4E29C1848A005DDAC7 /* EmoDiaryTests */,
 				C820AC5829C1848A005DDAC7 /* EmoDiaryUITests */,
 				C820AC3329C18489005DDAC7 /* Products */,
+				131B897AFCAB29E0E35589D4 /* Pods */,
+				8D4AAC362D2165E387D588A7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -181,9 +222,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C820AC5F29C1848A005DDAC7 /* Build configuration list for PBXNativeTarget "EmoDiary" */;
 			buildPhases = (
+				F6D0172D1708855E707E8038 /* [CP] Check Pods Manifest.lock */,
 				C820AC2E29C18489005DDAC7 /* Sources */,
 				C820AC2F29C18489005DDAC7 /* Frameworks */,
 				C820AC3029C18489005DDAC7 /* Resources */,
+				1FA354702A5750E131841D34 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -198,6 +241,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C820AC6229C1848A005DDAC7 /* Build configuration list for PBXNativeTarget "EmoDiaryTests" */;
 			buildPhases = (
+				3D2325AA62EEB0EF78824229 /* [CP] Check Pods Manifest.lock */,
 				C820AC4729C1848A005DDAC7 /* Sources */,
 				C820AC4829C1848A005DDAC7 /* Frameworks */,
 				C820AC4929C1848A005DDAC7 /* Resources */,
@@ -216,9 +260,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C820AC6529C1848A005DDAC7 /* Build configuration list for PBXNativeTarget "EmoDiaryUITests" */;
 			buildPhases = (
+				36BD56AA1AFD5D73079C486D /* [CP] Check Pods Manifest.lock */,
 				C820AC5129C1848A005DDAC7 /* Sources */,
 				C820AC5229C1848A005DDAC7 /* Frameworks */,
 				C820AC5329C1848A005DDAC7 /* Resources */,
+				BBFAB28EF6C7D84C93C388BF /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -298,6 +344,109 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1FA354702A5750E131841D34 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-EmoDiary/Pods-EmoDiary-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-EmoDiary/Pods-EmoDiary-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EmoDiary/Pods-EmoDiary-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		36BD56AA1AFD5D73079C486D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-EmoDiary-EmoDiaryUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3D2325AA62EEB0EF78824229 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-EmoDiaryTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BBFAB28EF6C7D84C93C388BF /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-EmoDiary-EmoDiaryUITests/Pods-EmoDiary-EmoDiaryUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-EmoDiary-EmoDiaryUITests/Pods-EmoDiary-EmoDiaryUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-EmoDiary-EmoDiaryUITests/Pods-EmoDiary-EmoDiaryUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F6D0172D1708855E707E8038 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-EmoDiary-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C820AC2E29C18489005DDAC7 /* Sources */ = {
@@ -476,6 +625,7 @@
 		};
 		C820AC6029C1848A005DDAC7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 40E7772AD19C875AF1CC09F0 /* Pods-EmoDiary.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -503,6 +653,7 @@
 		};
 		C820AC6129C1848A005DDAC7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 60A71C3807D7A2CAA32BDB4E /* Pods-EmoDiary.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -530,6 +681,7 @@
 		};
 		C820AC6329C1848A005DDAC7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC19A46595CC731E0315D144 /* Pods-EmoDiaryTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -549,6 +701,7 @@
 		};
 		C820AC6429C1848A005DDAC7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6595F08DDF21AFC69CF2D94E /* Pods-EmoDiaryTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -568,6 +721,7 @@
 		};
 		C820AC6629C1848A005DDAC7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DBFBC4E258B1D2554964F231 /* Pods-EmoDiary-EmoDiaryUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -585,6 +739,7 @@
 		};
 		C820AC6729C1848A005DDAC7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0AFD1AF8DF7F874E7D0A8892 /* Pods-EmoDiary-EmoDiaryUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
