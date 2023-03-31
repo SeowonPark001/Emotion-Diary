@@ -6,14 +6,14 @@
 //
 
 import UIKit
+import RealmSwift
 
-protocol UpdateDelegate { // 작성 페이지 내용을 그대로 가져와서 출력
-    func updateDiary(emojiIndex: Int, str: String)
-}
 
-class CalendarController : BaseController {
+class CalendarController : UIViewController {
     
     let calView = CalendarView()
+    
+    //MARK: - Load View
     
     override func loadView() {
         view = calView
@@ -24,6 +24,10 @@ class CalendarController : BaseController {
         
         setNavigationBar()
         setTarget()
+        
+        // 실행시 스플래시 화면 먼저 출력
+        let nextVC = SplashController()
+        self.navigationController?.pushViewController(nextVC, animated: true)
     }
     
     func setNavigationBar() {
@@ -52,38 +56,8 @@ class CalendarController : BaseController {
     
     @objc func tapAddBtn(){
         let nextVC = PostController()
-        nextVC.delegate = self
+        //nextVC.delegate = self
         navigationController?.pushViewController(nextVC, animated: true)
         
-    }
-}
-
-extension CalendarController : UpdateDelegate {
-    // 감정 이모티콘 업데이트
-    func updateDiary(emojiIndex: Int, str: String) {
-        calView.review.text = str
-        
-        switch emojiIndex {
-        case 0:
-            calView.emotion1.image = #imageLiteral(resourceName: "Neutral")
-            calView.emotion2.image = #imageLiteral(resourceName: "Neutral")
-        case 1:
-            calView.emotion1.image = #imageLiteral(resourceName: "Happy")
-            calView.emotion2.image = #imageLiteral(resourceName: "Happy")
-        case 2:
-            calView.emotion1.image = #imageLiteral(resourceName: "Touched")
-            calView.emotion2.image = #imageLiteral(resourceName: "Touched")
-        case 3:
-            calView.emotion1.image = #imageLiteral(resourceName: "Sad")
-            calView.emotion2.image = #imageLiteral(resourceName: "Sad")
-        case 4:
-            calView.emotion1.image = #imageLiteral(resourceName: "Hopeless")
-            calView.emotion2.image = #imageLiteral(resourceName: "Hopeless")
-        case 5:
-            calView.emotion1.image = #imageLiteral(resourceName: "Angry")
-            calView.emotion2.image = #imageLiteral(resourceName: "Angry")
-        default: print("해당 날짜의 감정 없음")
-        }
-        print("해당 날짜의 감정, 일기 데이터 불러옴")
     }
 }

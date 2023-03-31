@@ -7,11 +7,11 @@
 
 import UIKit
 
-class PostController : BaseController{
+class PostController : UIViewController{
     
     let postView = PostView() // 연결할 View 이름
     
-    var delegate:UpdateDelegate?
+    //var delegate:UpdateDelegate?
     
     let imgPicker = UIImagePickerController()
     
@@ -191,17 +191,6 @@ class PostController : BaseController{
         let success = UIAlertAction(title: "확인", style: .default) { action in
             print("확인버튼이 눌렸습니다.")
             
-            // 감정 및 일기 내용 메인화면에서 업데이트
-            switch self.postView.emoji.image {
-                // Data Model (X) 그냥 바로 메인 화면과 연결
-            case UIImage(named: emotionArray[0]): self.delegate?.updateDiary(emojiIndex: 0, str: self.postView.review.text)
-            case UIImage(named: emotionArray[1]): self.delegate?.updateDiary(emojiIndex: 1, str: self.postView.review.text)
-            case UIImage(named: emotionArray[2]): self.delegate?.updateDiary(emojiIndex: 2, str: self.postView.review.text)
-            case UIImage(named: emotionArray[3]): self.delegate?.updateDiary(emojiIndex: 3, str: self.postView.review.text)
-            case UIImage(named: emotionArray[4]): self.delegate?.updateDiary(emojiIndex: 4, str: self.postView.review.text)
-            case UIImage(named: emotionArray[5]): self.delegate?.updateDiary(emojiIndex: 5, str: self.postView.review.text)
-                default: print("해당하는 감정이 없음")
-            }
             // 메인화면으로 돌아가기
             self.navigationController?.popViewController(animated: true)
      
