@@ -12,7 +12,7 @@ class PostView : UIView {
     // Realm 데이터
     var diary: DiaryData? {
         didSet {
-            guard var diary = diary else {
+            guard let diary = diary else {
                 // 일기 기록이 없는 경우 (= 일기 작성 시) => 버튼 "작성 완료 & 취소"
                 summitBtn.setTitle("작성 완료", for: .normal)
                 cancelBtn.setTitle("취소", for: .normal)

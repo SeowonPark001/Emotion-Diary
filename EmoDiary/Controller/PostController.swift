@@ -273,7 +273,7 @@ class PostController : UIViewController{
                         }
                     }
                     else {
-                        var alert = UIAlertController(title: "⚠️\n일기 확인\n", message: "이미 오늘 작성한 일기가 있습니다.", preferredStyle: .alert)
+                        let alert = UIAlertController(title: "⚠️\n일기 확인\n", message: "이미 오늘 작성한 일기가 있습니다.", preferredStyle: .alert)
                         let check = UIAlertAction(title: "확인", style: .default) { [self] action in
                             print("확인버튼이 눌렸습니다.")
                         }

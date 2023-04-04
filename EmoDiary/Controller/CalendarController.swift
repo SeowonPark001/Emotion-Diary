@@ -280,7 +280,7 @@ class CalendarController : UIViewController, FSCalendarDelegate, FSCalendarDataS
             navigationController?.pushViewController(nextVC, animated: true)
         }
         else { // 해당 날짜에 일기 기록이 존재하는 경우
-            var alert = UIAlertController(title: "⚠️\n이미 일기 기록이 있어요!\n", message: "목록에서 일기 내용을 수정해주세요.", preferredStyle: .alert)
+            let alert = UIAlertController(title: "⚠️\n이미 일기 기록이 있어요!\n", message: "목록에서 일기 내용을 수정해주세요.", preferredStyle: .alert)
             let success = UIAlertAction(title: "확인", style: .default) { [self] action in
                 print("확인버튼이 눌렸습니다.")
             }
