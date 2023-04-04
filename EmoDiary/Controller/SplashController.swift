@@ -65,22 +65,6 @@ class SplashController : UIViewController {
     }
     
     func executeAnimation() {
-//        self.view.backgroundColor = UIColor(named: "Medium")
-//        
-//        view.addSubview(animationView)
-//        
-//        NSLayoutConstraint.activate([
-//            animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            animationView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100)
-//        ])
-//        
-//        self.view.addSubview(self.myTitle) // myTitle
-//        self.myTitle.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        NSLayoutConstraint.activate([
-//            self.myTitle.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-//            self.myTitle.topAnchor.constraint(equalTo: animationView.bottomAnchor)
-//        ])
         
         // 애니메이션 재생 끝난 후!
         animationView.play{ (finish) in

@@ -7,8 +7,10 @@ target 'EmoDiary' do
 
   # Pods for EmoDiary
 
+pod 'Realm', '~>10'
 pod 'RealmSwift', '~>10'
 pod 'lottie-ios'
+pod 'FSCalendar'
 
 
 

@@ -6,14 +6,21 @@
 //
 
 import UIKit
+import RealmSwift
 
 class PostController : UIViewController{
     
-    let postView = PostView() // 연결할 View 이름
+    let postView = PostView()
     
-    //var delegate:UpdateDelegate?
+    var delegate: UpdateDelegate?
+    var recordDate: Date = Date()
     
     let imgPicker = UIImagePickerController()
+    
+    let emotionArray :[String] = ["Neutral", "Happy", "Touched", "Sad", "Hopeless", "Angry"]
+    let emojiArray :[String] = ["😐", "😆", "🥹", "😢", "😱", "😡"]
+    
+    //MARK: - Load View
     
     override func loadView() {
         view = postView
@@ -25,10 +32,18 @@ class PostController : UIViewController{
         setNavigationBar()
         setTarget()
         setDelegate()
-        
-        configureDate()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        
+        postView.datePicker.date = recordDate
+        
+        // 화면 나타날 때마다 데이터 불러오기
+    }
+    
+    
+    
+    //MARK: - Set Up UI
     func setNavigationBar() {
         title = "감정 일기 작성"
         
@@ -50,14 +65,6 @@ class PostController : UIViewController{
     }
     
     func setTarget() {
-        // 하단 버튼 누르기
-        postView.cancelBtn.addTarget(self, action: #selector(cancelBtnTapped), for: .touchUpInside)
-        postView.summitBtn.addTarget(self, action: #selector(summitBtnTapped), for: .touchUpInside)
-        
-        // 달력 아이콘 누르기
-        postView.calendar.tag = 1
-        self.postView.calendar.isUserInteractionEnabled = true
-        self.postView.calendar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.imgViewTapped)))
         
         // 이모지 누르기
         postView.emoji.tag = 2
@@ -77,6 +84,10 @@ class PostController : UIViewController{
         // 텍스트뷰(작성란) 터치
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapTextView(_:)))
         view.addGestureRecognizer(tapGesture)
+        
+        // 하단 버튼 누르기
+        postView.cancelBtn.addTarget(self, action: #selector(cancelBtnTapped), for: .touchUpInside)
+        postView.summitBtn.addTarget(self, action: #selector(summitBtnTapped), for: .touchUpInside)
     }
     
     func setDelegate() {
@@ -84,36 +95,12 @@ class PostController : UIViewController{
         imgPicker.delegate = self
     }
     
-    // 해당 날짜 표시
-    func configureDate(){
-        let now = Date()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY.MM.dd"
-        dateFormatter.timeZone = NSTimeZone(name: "ko_KR") as TimeZone?
-        let result = dateFormatter.string(from: now)
-        
-        postView.dateView.text = result
-    }
-    
-    // 작성란 Place Holder 구현
-    @objc private func didTapTextView(_ sender: Any) {
-        view.endEditing(true)
-    }
-    
-    // 글자 제한수 업데이트
-    private func updateCountLabel(characterCount: Int) {
-        postView.textCounter.text = "\(characterCount)/150"
-    }
-
-    
     // 이미지뷰(아이콘) 눌렀을 때
     @objc func imgViewTapped(_ sender: UITapGestureRecognizer) {
         let tag = sender.view!.tag
         
         switch tag {
-        case 1: // 달력 아이콘 => 달력 팝업창 출력
-            print("달력 아이콘 클릭됨 (\(tag))")
-            
+        
         case 2: // 이모지 => 액션시트 출력
             print("이모지 클릭됨 (\(tag))")
             showEmojiSheet(sender)
@@ -127,14 +114,24 @@ class PostController : UIViewController{
         }
     }
     
+    // Date형 날짜 -> String으로 변환
+    func configureDate(date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY.MM.dd"
+        dateFormatter.timeZone = NSTimeZone(name: "ko_KR") as TimeZone?
+         
+        return dateFormatter.string(from: date)
+    }
+    
+    
     // 감정 액션 시트 출력
     func showEmojiSheet(_ sender: UITapGestureRecognizer) {
         let actionSheet = UIAlertController(title: "오늘의 감정", message: nil, preferredStyle: .actionSheet)
         
         for i in 0...5 { // 6가지 감정 넣기
             actionSheet.addAction(UIAlertAction(title: emojiArray[i], style: .default, handler: {(ACTION:UIAlertAction) in
-                print("\(emotionArray[i]) 감정 선택")
-                self.postView.emoji.image = UIImage(named: emotionArray[i]) // 해당 감정 이모티콘 출력
+                print("\(self.emotionArray[i]) 감정 선택")
+                self.postView.emoji.image = UIImage(named: self.emotionArray[i]) // 해당 감정 이모티콘 출력
             }))
         }
         // 취소 버튼
@@ -163,16 +160,38 @@ class PostController : UIViewController{
         self.present(actionSheet, animated: true, completion: nil)
     }
     
+    // 작성란 Place Holder 구현
+    @objc private func didTapTextView(_ sender: Any) {
+        view.endEditing(true)
+    }
+    
+    // 글자 제한수 업데이트
+    private func updateCountLabel(characterCount: Int) {
+        postView.textCounter.text = "\(characterCount)/150"
+    }
+    
+    
     // 작성 취소 버튼 눌렀을 때
     @objc func cancelBtnTapped(){
         print("취소 버튼 클릭")
         
         // Alert 팝업창
-        let alert = UIAlertController(title: "일기 작성 취소", message: "일기 작성을 취소하시겠습니까?", preferredStyle: .alert)
+        var alert = UIAlertController(title: "일기 삭제", message: "작성한 일기를 삭제하시겠습니까?", preferredStyle: .alert)
+        
+        // 일기 작성 후 새로 저장하는 경우
+        if postView.diary == nil {
+            alert = UIAlertController(title: "일기 작성 취소", message: "일기 작성을 취소하시겠습니까?", preferredStyle: .alert)
+        }
+        
         let success = UIAlertAction(title: "확인", style: .default) { action in
             print("확인버튼이 눌렸습니다.")
-            self.navigationController?.popViewController(animated: true)
- // 메인화면으로 돌아가기
+            
+            if self.postView.diary == nil { // 전 화면으로 돌아가기 (=> Main)
+                self.navigationController?.popViewController(animated: true)
+            }
+            else { // 데이터가 존재하는 경우
+                // 데이터 삭제
+            }
         }
         let cancel = UIAlertAction(title: "취소", style: .cancel) { action in
             print("취소버튼이 눌렸습니다.")
@@ -186,7 +205,7 @@ class PostController : UIViewController{
     @objc func summitBtnTapped() {
         print("작성 완료 버튼 클릭")
         
-        // 등록을 완료하시겠습니까? << Alert 팝업창도 나중에 띄우기
+        // Alert 팝업창
         let alert = UIAlertController(title: "일기 작성 확인", message: "작성한 일기를 등록하시겠습니까?", preferredStyle: .alert)
         let success = UIAlertAction(title: "확인", style: .default) { action in
             print("확인버튼이 눌렸습니다.")

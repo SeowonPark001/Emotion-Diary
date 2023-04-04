@@ -9,7 +9,8 @@ import UIKit
 
 class PostView : UIView {
     
-    var dataArray: [PostModel] = [] // 데이터 모델 - 추후 사용
+    // Realm 데이터
+    var diary: DiaryData?
     
     // 작성 날짜 라벨
     let dateLabel: UILabel = {
@@ -29,24 +30,26 @@ class PostView : UIView {
         return img
     }()
     
-    // 해당 날짜 표시
-    let dateView: UILabel = {
-        let label = UILabel()
-        label.text = " "
-        label.font = .boldSystemFont(ofSize: 16)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     // 날짜 스택뷰
     lazy var sview1 : UIStackView = {
-        let sv = UIStackView(arrangedSubviews: [dateLabel, calendar, dateView])
+        let sv = UIStackView(arrangedSubviews: [dateLabel, calendar])
         sv.axis = .horizontal
         sv.distribution = .equalSpacing
         sv.alignment = .leading
         sv.spacing = 10
         sv.translatesAutoresizingMaskIntoConstraints = false
         return sv
+    }()
+    
+    // 📆Date Picker
+    let datePicker : UIDatePicker = {
+        let dp = UIDatePicker()
+        dp.datePickerMode = .date
+        dp.locale = Locale(identifier: "ko_KR") // 지역화된 데이터 포맷과 언어 설정
+        dp.timeZone = TimeZone(identifier: "Asia/Seoul") // 시간대
+        // target => controller
+        dp.translatesAutoresizingMaskIntoConstraints = false
+        return dp
     }()
     
     
@@ -64,13 +67,13 @@ class PostView : UIView {
     
     lazy var review: UITextView = {
         let tv = UITextView()
-        tv.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15) // 테두리-텍스트 간 여백
+        tv.textContainerInset = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         tv.text = textViewPlaceHolder
         tv.textColor = .gray
         tv.font = .systemFont(ofSize: 17)
         tv.layer.borderWidth = 1
         tv.layer.borderColor = UIColor.gray.cgColor
-        tv.layer.cornerRadius = 10 // 둥근 모서리
+        tv.layer.cornerRadius = 10
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()
@@ -100,7 +103,6 @@ class PostView : UIView {
         let img = UIImageView()
         img.image = #imageLiteral(resourceName: "smile_icon")
         img.contentMode = .scaleAspectFit
-        // img.layer.opacity = 0.5
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
@@ -131,7 +133,6 @@ class PostView : UIView {
         let img = UIImageView()
         img.image = #imageLiteral(resourceName: "camera_icon")
         img.contentMode = .scaleAspectFit
-        // img.layer.opacity = 0.5
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
@@ -172,7 +173,7 @@ class PostView : UIView {
     // ✖️취소/삭제 버튼
     let cancelBtn: UIButton = {
         let btn = UIButton()
-        btn.setTitle("취소", for: .normal)
+        btn.setTitle("삭제", for: .normal)
         btn.backgroundColor = .gray
         btn.layer.cornerRadius = 10
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -182,7 +183,7 @@ class PostView : UIView {
     // ✅작성/수정 완료 버튼
     let summitBtn: UIButton = {
         let btn = UIButton()
-        btn.setTitle("작성 완료", for: .normal)
+        btn.setTitle("수정 완료", for: .normal)
         btn.backgroundColor = UIColor(named: "Dark")
         btn.layer.cornerRadius = 10
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -212,6 +213,7 @@ class PostView : UIView {
         return sv
     }()
     
+    //MARK: - View Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -222,16 +224,16 @@ class PostView : UIView {
         setUpConstraints()
     }
     
-    func setupView() { // 만든 뷰/아이템 등록
+    func setupView() {
         addSubview(stackView)
         shadow.addSubview(photo)
         review.addSubview(textCounter)
+        addSubview(datePicker)
     }
     
-    func setUpConstraints() { // 해당 뷰의 크기/위치 설정
+    func setUpConstraints() {
         NSLayoutConstraint.activate([
             
-            // 전체 (스택) 뷰
             stackView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 30),
             stackView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 25),
             stackView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant:  -25),
@@ -240,6 +242,12 @@ class PostView : UIView {
             // 달력 아이콘
             calendar.widthAnchor.constraint(equalToConstant: 22),
             calendar.heightAnchor.constraint(equalToConstant: 22),
+            
+            // Date Picker
+            datePicker.widthAnchor.constraint(equalToConstant: 100),
+            datePicker.heightAnchor.constraint(equalToConstant: 40),
+            datePicker.centerYAnchor.constraint(equalTo: sview1.centerYAnchor),
+            datePicker.leadingAnchor.constraint(equalTo: sview1.trailingAnchor, constant: 15),
             
             // 일기 작성란
             review.topAnchor.constraint(equalTo: reviewLabel.bottomAnchor, constant: 15),
