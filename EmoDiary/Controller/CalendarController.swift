@@ -11,9 +11,15 @@ import FSCalendar
 
 class CalendarController : UIViewController, FSCalendarDelegate, FSCalendarDataSource, FSCalendarDelegateAppearance {
     
-    var selectedDate: Date = Date() // 기본 선택 날짜 = 오늘
+    var realm: Realm!
+    var load: Results<DiaryData>?
+    var dataList: Results<DiaryData>?
+    
+    var selectedDate: Date = Date()
     var strSelectedDate: String = ""
+    
     let calView = CalendarView()
+    
     
     //MARK: - Load View
     
@@ -23,6 +29,14 @@ class CalendarController : UIViewController, FSCalendarDelegate, FSCalendarDataS
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        realm = try! Realm()
+        // DiaryData 데이터들을 가져옴 + 오름차순
+        load = realm.objects(DiaryData.self).sorted(byKeyPath: "date", ascending: true)
+        dataList = load
+        
+        selectedDate = Date() // 실행 후 맨 처음에는 오늘 날짜 선택하도록
+        strSelectedDate = configureDate(date: selectedDate) // 오늘 날짜
         
         setCalendarUI()
         setNavigationBar()
@@ -34,7 +48,67 @@ class CalendarController : UIViewController, FSCalendarDelegate, FSCalendarDataS
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        realm = try! Realm()
+        load = realm.objects(DiaryData.self).sorted(byKeyPath: "date", ascending: true)
+        
+        
         // 데이터 불러오기
+        
+        strSelectedDate = configureDate(date: selectedDate)
+        loadData(date: strSelectedDate)
+    }
+    
+    func loadData(date: String) {
+        
+        dataList = load!.filter("date == '\(date)'")
+        print("CalendarView - Load Data: \n\(dataList)")
+
+        showDiary(dataList: dataList)
+    }
+    
+    // 해당일기 내용 하단에 띄우기
+    func showDiary(dataList: Results<DiaryData>?) {
+        // 해당 기록이 있는 경우
+        if dataList?.count != Optional(0) {
+            for item in dataList! {
+                let ymd = item.date.split(separator: ".")
+                
+                if ymd[1].prefix(1) == "0" { // 01 ~ 09월
+                    calView.mmDate.text = "\(ymd[1].suffix(1))월"
+                } else { // 10 ~ 12월
+                    calView.mmDate.text = "\(ymd[1])월"
+                }
+                if ymd[2].prefix(1) == "0" { // 01 ~ 09일
+                    calView.ddDate.text = "\(ymd[2].suffix(1))"
+                } else { // 10 ~31일
+                    calView.ddDate.text = "\(ymd[2])"
+                }
+                calView.review.text = item.review
+                calView.review.textColor = .black
+                calView.emoji.image = UIImage(named: (item.emotion))
+                
+                if item.photo != nil {
+                    calView.photo.image = UIImage(data: (item.photo!))
+                    calView.photo.contentMode = .scaleAspectFill    // 뷰크기 내에 맞춤 (잘림)
+                    calView.photo.clipsToBounds = true              // 넘치는 부분 잘라내기
+                    calView.photo.translatesAutoresizingMaskIntoConstraints = false
+                    calView.shadow3.isHidden = false
+                } else {
+                    calView.photo.image = nil
+                    calView.shadow3.isHidden = true
+                }
+            }
+        }
+        else { // 일기가 없는 경우
+            calView.mmDate.text = ""
+            calView.ddDate.text = ""
+            calView.review.text = "오늘의 일기를 남겨보세요."
+            calView.review.textColor = .gray
+            calView.emoji.image = nil
+            calView.photo.image = nil
+            calView.shadow3.isHidden = true
+        }
     }
     
     //MARK: - Calendar UI
@@ -60,8 +134,8 @@ class CalendarController : UIViewController, FSCalendarDelegate, FSCalendarDataS
         calView.calendar.calendarWeekdayView.weekdayLabels[6].text = "토"
         
         // 글자 폰트 및 사이즈 지정
-        calView.calendar.appearance.weekdayFont = UIFont(name: "IM_Hyemin-Regular", size: 14)
-        calView.calendar.appearance.titleFont = UIFont(name: "IM_Hyemin-Regular", size: 16)
+        calView.calendar.appearance.weekdayFont = .systemFont(ofSize: 14) // 월~일
+        calView.calendar.appearance.titleFont = .systemFont(ofSize: 16) // 날짜 숫자
         
         // 캘린더 스크롤 가능하게 지정
         calView.calendar.scrollEnabled = true
@@ -116,6 +190,10 @@ class CalendarController : UIViewController, FSCalendarDelegate, FSCalendarDataS
         let strSelectedDate = configureDate(date: date)
         
         // 선택한 날짜에 해당하는 데이터 => 아래 일기 카드에 출력
+        dataList = load!.filter("date == '\(strSelectedDate)'")
+        print(dataList)
+        
+        showDiary(dataList: dataList)
         
         selectedDate = date
     }
@@ -214,5 +292,6 @@ extension CalendarController: UpdateDelegate {
         selectedDate = date
         strSelectedDate = configureDate(date: selectedDate)
         // 해당 날짜 데이터 받아오기
+        loadData(date: strSelectedDate)
     }
 }

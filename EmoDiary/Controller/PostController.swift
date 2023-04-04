@@ -10,13 +10,16 @@ import RealmSwift
 
 class PostController : UIViewController{
     
-    let postView = PostView()
+    var realm: Realm!
+    var load: Results<DiaryData>?
+    var realmData: DiaryData?
     
     var delegate: UpdateDelegate?
     var recordDate: Date = Date()
-    
+
+    let postView = PostView()
     let imgPicker = UIImagePickerController()
-    
+
     let emotionArray :[String] = ["Neutral", "Happy", "Touched", "Sad", "Hopeless", "Angry"]
     let emojiArray :[String] = ["😐", "😆", "🥹", "😢", "😱", "😡"]
     
@@ -37,11 +40,15 @@ class PostController : UIViewController{
     override func viewWillAppear(_ animated: Bool) {
         
         postView.datePicker.date = recordDate
-        
-        // 화면 나타날 때마다 데이터 불러오기
+        loadData()  // 화면 나타날 때마다 데이터 불러오기
     }
     
-    
+    func loadData() {
+        realm = try! Realm()
+        load = realm?.objects(DiaryData.self)   // DiaryData 데이터들을 가져옴
+        postView.diary = realmData              // DiaryData형 => View로 전달
+        print("Post - Load Data: \(load)")
+    }
     
     //MARK: - Set Up UI
     func setNavigationBar() {
@@ -49,7 +56,7 @@ class PostController : UIViewController{
         
         let navi = UINavigationBarAppearance()
         navi.configureWithOpaqueBackground()
-        navi.backgroundColor = UIColor(named: "Medium")
+        navi.backgroundColor = UIColor(named: "Bright")
         navi.titleTextAttributes = [.foregroundColor: UIColor.white] // 글씨색
 
         let naviCtrl = navigationController?.navigationBar
@@ -65,6 +72,9 @@ class PostController : UIViewController{
     }
     
     func setTarget() {
+        // 텍스트뷰(작성란) 터치
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapTextView(_:)))
+        view.addGestureRecognizer(tapGesture)
         
         // 이모지 누르기
         postView.emoji.tag = 2
@@ -80,10 +90,6 @@ class PostController : UIViewController{
         postView.photo.tag = 4
         self.postView.photo.isUserInteractionEnabled = true
         self.postView.photo.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.imgViewTapped)))
-        
-        // 텍스트뷰(작성란) 터치
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapTextView(_:)))
-        view.addGestureRecognizer(tapGesture)
         
         // 하단 버튼 누르기
         postView.cancelBtn.addTarget(self, action: #selector(cancelBtnTapped), for: .touchUpInside)
@@ -171,9 +177,9 @@ class PostController : UIViewController{
     }
     
     
-    // 작성 취소 버튼 눌렀을 때
+    // 작성 취소/삭제 버튼 눌렀을 때
     @objc func cancelBtnTapped(){
-        print("취소 버튼 클릭")
+        print("취소/삭제 버튼 클릭")
         
         // Alert 팝업창
         var alert = UIAlertController(title: "일기 삭제", message: "작성한 일기를 삭제하시겠습니까?", preferredStyle: .alert)
@@ -190,7 +196,16 @@ class PostController : UIViewController{
                 self.navigationController?.popViewController(animated: true)
             }
             else { // 데이터가 존재하는 경우
-                // 데이터 삭제
+                // 데이터 삭제 (Delete)
+                let delete = self.realmData
+                
+                try! self.realm.write {
+                    print("[\(delete?.date)] 일기 삭제 -------------")
+                    self.realm.delete(delete!)
+                }
+                print("일기 삭제 완료")
+                // 전 화면으로 돌아가기 (=> List)
+                self.navigationController?.popViewController(animated: true)
             }
         }
         let cancel = UIAlertAction(title: "취소", style: .cancel) { action in
@@ -201,17 +216,120 @@ class PostController : UIViewController{
         self.present(alert, animated: true, completion: nil)
     }
     
-    // 작성 완료 버튼 눌렀을 때
+    // 작성 완료/수정 버튼 눌렀을 때
     @objc func summitBtnTapped() {
-        print("작성 완료 버튼 클릭")
+        print("작성 완료/수정 버튼 클릭")
         
         // Alert 팝업창
-        let alert = UIAlertController(title: "일기 작성 확인", message: "작성한 일기를 등록하시겠습니까?", preferredStyle: .alert)
+        var alert = UIAlertController(title: "일기 수정 확인", message: "작성한 일기를 수정하시겠습니까?", preferredStyle: .alert)
+        
+        // 일기 작성 후 새로 저장하는 경우
+        if postView.diary == nil {
+            alert = UIAlertController(title: "일기 작성 확인", message: "작성한 일기를 저장하시겠습니까?", preferredStyle: .alert)
+        }
+        
         let success = UIAlertAction(title: "확인", style: .default) { action in
             print("확인버튼이 눌렸습니다.")
             
-            // 메인화면으로 돌아가기
-            self.navigationController?.popViewController(animated: true)
+            // 작성란이 빈칸인 경우 혹은 감정 이모티콘을 선택하지 않은 경우
+            if self.postView.review.text == "오늘의 감정, 있었던 일들을 간단하게 남겨보세요." || self.postView.emoji.image == UIImage(named: "smile_icon") {
+                let alert = UIAlertController(title: "감정 일기를 다 채워주세요!", message: "", preferredStyle: .alert)
+                let check = UIAlertAction(title: "확인", style: .default) { action in
+                    print("확인버튼이 눌렸습니다.")
+                }
+                alert.addAction(check)
+                self.present(alert, animated: true, completion: nil)
+            }
+            else { // 정상적으로 작성/수정한 경우 => Realm Data Create/Update
+                
+                // 1. 데이터 작성/추가 (Create)
+                if self.postView.diary == nil {
+                    let data = DiaryData()
+                    data.date = self.configureDate(date: self.postView.datePicker.date)
+                    data.review = self.postView.review.text
+                    data.emotion = {
+                        var result = ""
+                        for i in 0...5 {
+                            if self.postView.emoji.image == UIImage(named: self.emotionArray[i]) {
+                                result = String(self.emotionArray[i])
+                            }
+                            else if self.postView.emoji.image == UIImage(named: "smile_icon") {
+                                result = String(self.emotionArray[0])
+                            }
+                        }
+                        return result
+                    }()
+                    if self.postView.photo.image != UIImage(named: "default_photo") {
+                        data.photo = self.postView.photo.image?.jpegData(compressionQuality: 1)
+                    }
+                    dump("데이터 상세 정보: \n\(data)")
+                    
+                    // 같은 날짜의 기록이 없는 경우
+                    if (self.load?.filter("date == '\(data.date)'").count)! == 0 {
+                        // 저장하기
+                        try! self.realm?.write {
+                            self.realm?.add(data)
+                            print("Realm 데이터 추가 완료!!")
+                        }
+                    }
+                    else {
+                        var alert = UIAlertController(title: "⚠️\n일기 확인\n", message: "이미 오늘 작성한 일기가 있습니다.", preferredStyle: .alert)
+                        let check = UIAlertAction(title: "확인", style: .default) { [self] action in
+                            print("확인버튼이 눌렸습니다.")
+                        }
+                        alert.addAction(check)
+                        self.present(alert, animated: true, completion: nil)
+                    }
+
+//                    let dateFormatter = DateFormatter()
+//                    dateFormatter.dateFormat = "yyyy.MM.dd"
+//                    dateFormatter.date(from: data.date)!
+                    self.delegate?.updateDiary(date: self.postView.datePicker.date)
+                    
+                    // 전 화면으로 돌아가기 (=> Main)
+                    self.navigationController?.popViewController(animated: true)
+                }
+                
+                else { // 이미 데이터가 있는 경우
+                    // 2. 데이터 수정 (Updat)
+                    let update = self.realmData
+                    
+                    try! self.realm.write {
+                        update!.date = self.configureDate(date: self.postView.datePicker.date)
+                        
+                        update!.review = self.postView.review.text
+                        update!.emotion = {
+                            var result = ""
+                            for i in 0...5 {
+                                if self.postView.emoji.image == UIImage(named: self.emotionArray[i]) {
+                                    result = String(self.emotionArray[i])
+                                }
+                                else if self.postView.emoji.image == UIImage(named: "smile_icon") {
+                                    result = String(self.emotionArray[0])
+                                }
+                            }
+                            return result
+                        }()
+                        if self.postView.photo.image != UIImage(named: "default_photo") {
+                            update!.photo = self.postView.photo.image?.jpegData(compressionQuality: 1)
+                        } else {
+                            update!.photo = nil
+                        }
+                    }
+                    print("[\(update?.date)] 일기 수정 완료 ---------------")
+                    dump("데이터 수정 정보: \n\(update)")
+                    
+                    
+//                    let dateFormatter = DateFormatter()
+//                    dateFormatter.dateFormat = "yyyy.MM.dd"
+//                    dateFormatter.date(from: update!.date)!
+                    
+                    self.delegate?.updateDiary(date: self.postView.datePicker.date)
+                    
+                    // 전 화면으로 돌아가기 (=> List)
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
      
         }
         let cancel = UIAlertAction(title: "취소", style: .cancel) { action in

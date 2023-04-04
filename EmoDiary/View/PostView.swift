@@ -10,7 +10,32 @@ import UIKit
 class PostView : UIView {
     
     // Realm 데이터
-    var diary: DiaryData?
+    var diary: DiaryData? {
+        didSet {
+            guard var diary = diary else {
+                // 일기 기록이 없는 경우 (= 일기 작성 시) => 버튼 "작성 완료 & 취소"
+                summitBtn.setTitle("작성 완료", for: .normal)
+                cancelBtn.setTitle("취소", for: .normal)
+                return
+            }
+            // 일기 기록이 있는 경우 (= 일기 목록 상세)
+            print("전달받은 데이터: \(diary.date) - \(diary.emotion): \(diary.review)")
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy.MM.dd"
+            datePicker.date = dateFormatter.date(from: diary.date)!
+            
+            review.text = diary.review
+            review.textColor = .black
+            emoji.image = UIImage(named: diary.emotion)
+            if diary.photo != nil {
+                photo.image = UIImage(data: diary.photo!)
+            } else {
+                photo.image = UIImage(named: "default_photo")
+            }
+        }
+    }
+    
     
     // 작성 날짜 라벨
     let dateLabel: UILabel = {
