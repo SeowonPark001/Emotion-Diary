@@ -15,6 +15,9 @@ class CalendarController : UIViewController, FSCalendarDelegate, FSCalendarDataS
     var load: Results<DiaryData>?
     var dataList: Results<DiaryData>?
     
+    var datesWithImg = [String]()
+    var dataDict = [String: String]()
+    
     var selectedDate: Date = Date()
     var strSelectedDate: String = ""
     
@@ -48,13 +51,18 @@ class CalendarController : UIViewController, FSCalendarDelegate, FSCalendarDataS
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
+        // 데이터 불러오기
         realm = try! Realm()
         load = realm.objects(DiaryData.self).sorted(byKeyPath: "date", ascending: true)
         
-        
-        // 데이터 불러오기
-        
+        for item in load! {
+            if datesWithImg.contains(item.date) == false {
+                datesWithImg.append(item.date)
+                dataDict[item.date] = item.emotion
+            }
+        }
+        print("데이터 날짜 (\(datesWithImg.count)):\n\(datesWithImg)\n데이터 딕셔너리 (\(dataDict.count))\n\(dataDict)")
+                
         strSelectedDate = configureDate(date: selectedDate)
         loadData(date: strSelectedDate)
     }
@@ -180,8 +188,17 @@ class CalendarController : UIViewController, FSCalendarDelegate, FSCalendarDataS
     
     // 특정 날짜에 이미지 세팅
     func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
-        // 데이터 불러와서 이미지 출력하기
-        return nil
+        var dateStr = configureDate(date: date)
+        
+        // 이미지 크기 조정
+        let customImage = UIImage(named: dataDict[dateStr] ?? "Neutral")
+        let newImageRect = CGRect(x: 0, y: 0, width: 35, height: 35)
+        UIGraphicsBeginImageContext(CGSize(width: 35, height: 46.5))
+        customImage?.draw(in: newImageRect)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()?.withRenderingMode(.alwaysOriginal)
+        UIGraphicsEndImageContext()
+        
+        return datesWithImg.contains(dateStr) ? newImage : nil
     }
     
     // 날짜 선택 시 콜백 메소드
