@@ -5,9 +5,9 @@
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string>생동감 있는 메모를 만들기 위해 사진기능을 사용합니다.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
+	<string>생동감 있는 메모를 만들기 위해 사진첩에서 사진을 불러옵니다.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
