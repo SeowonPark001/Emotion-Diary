@@ -23,5 +23,56 @@
 - SearchBar를 이용한 기록 검색 기능
 - Lottie를 이용한 스플래시 애니메이션 구현
 #### 📚 사용 기술 & 라이브러리 : Swift, FSCalender, Realm, Lottie
-#### 📎 전체 시연 영상 : https://www.youtube.com
 <br>
+
+### 🤔 고민 & 구현 방법
+1. 데이터를 받아오는 시간을 줄이기 위한 방법
+> Q. 고민 : 앱을 실행시키고 컨트롤러 간의 이동에서 여러 개의 비동기 처리와 데이터를 받아오는 시간이 최대한 지연되지 않도록 하려면 어떻게 해야 하는가.
+
+> S. 해결 : 앱 실행 후 메인 컨트롤러에서 Realm 데이터를 읽어오기 시작한 즉시 스플래시 화면을 띄워 애니메이션 재생시간동안 데이터를 받아옴.
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        realm = try! Realm()
+        // DiaryData 데이터들을 가져옴 + 오름차순
+        load = realm.objects(DiaryData.self).sorted(byKeyPath: "date", ascending: true)
+        dataList = load
+        
+        ...
+        
+        // 실행시 스플래시 화면 먼저 출력
+        let nextVC = SplashController()
+        self.navigationController?.pushViewController(nextVC, animated: true)
+    }
+>
+
+    func executeAnimation() {
+        // 애니메이션 재생 끝난 후!
+        animationView.play{ (finish) in
+            print("Animation Finished!")
+            self.navigationController?.popToRootViewController(animated: true)
+        }
+    }
+> R. 결과 : 데이터를 받아오는 데 걸리는 시간을 줄이고 부드럽고 동적인 흐름으로 데이터 호출과 화면이동을 구성.
+<br>
+
+2. 화면 내 버튼을 효율적으로 배치하는 방법
+> Q. 고민 : 네비게이션바 및 탭바 없이 화면 공간을 최대한 차지하지 않으면서 사용자 관점에서 접근 및 알아보기 쉬운 버튼들을 배치하려면 어떻게 해야 하는가.
+
+> S. 해결 : 사용자 경험 관점에서 터치하기 쉽게 우측하단에 원형 메뉴 버튼을 배치하였고, 알아보기 쉬운 아이콘을 표현한 일기 작성 버튼과 목록 버튼을 숨겨서 다른 UI와 겹치지 않게 배치. 
+
+    @objc func tapMenuBtn() {
+        print("(+) 메뉴 버튼 클릭")
+        
+        calView.addBtn.layer.cornerRadius = calView.addBtn.frame.size.height / 2
+        calView.addBtn.clipsToBounds = true
+        calView.listBtn.layer.cornerRadius = calView.listBtn.frame.size.height / 2
+        calView.listBtn.clipsToBounds = true
+        
+        // 버튼 누를 때마다 나타났다/사라졌다 토글 지정
+        calView.addBtn.isHidden.toggle()
+        calView.listBtn.isHidden.toggle()
+    }
+> R. 결과 : 메뉴 버튼 하나만 클릭하면 숨겨져 있던 다른 버튼들이 나타나 사용자로 하여금 효율적인 버튼 수납이 가능하도록 함.
+
