@@ -1,5 +1,5 @@
 # 📝 나의 감정 일기 (Emotion-Diary)
-## 📱 개요: Swift MVC 패턴을 이용한 다이어리 iOS 앱 프로젝트
+#### 📱 개요: Swift MVC 패턴을 이용한 다이어리 iOS 앱 프로젝트
 <div>
   <img src="https://user-images.githubusercontent.com/69637868/230543106-40a86b89-8e9a-4d9b-b8e7-e66d770df099.png" alt="스플래시" width="130" height="280">
 <img src="https://user-images.githubusercontent.com/69637868/230543098-a4c3a00d-6dff-4bb6-9d5f-d8092414e474.png" alt="메인1" width="130" height="280">
@@ -25,5 +25,3 @@
 #### 📚 사용 기술 & 라이브러리 : Swift, FSCalender, Realm, Lottie
 #### 📎 전체 시연 영상 : https://www.youtube.com
 <br>
-
-### 🤔 고민 & 구현 방법
