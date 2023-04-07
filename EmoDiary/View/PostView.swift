@@ -231,7 +231,7 @@ class PostView : UIView {
     lazy var stackView : UIStackView = {
         let sv = UIStackView(arrangedSubviews: [sview1, reviewLabel, review, sview3, sview4, shadow, sview5])
         sv.axis = .vertical
-        sv.distribution = .fillProportionally
+        sv.distribution = .fill
         sv.alignment = .leading
         sv.spacing = 25
         sv.translatesAutoresizingMaskIntoConstraints = false
@@ -271,20 +271,28 @@ class PostView : UIView {
             // Date Picker
             datePicker.widthAnchor.constraint(equalToConstant: 100),
             datePicker.heightAnchor.constraint(equalToConstant: 40),
-            datePicker.centerYAnchor.constraint(equalTo: sview1.centerYAnchor),
-            datePicker.leadingAnchor.constraint(equalTo: sview1.trailingAnchor, constant: 15),
+            datePicker.centerYAnchor.constraint(equalTo: dateLabel.centerYAnchor),
+            datePicker.leadingAnchor.constraint(equalTo: sview1.trailingAnchor, constant: 18),
+            
+            // label
+            //reviewLabel.topAnchor.constraint(equalTo: datePicker.bottomAnchor, constant: 30),
+            reviewLabel.heightAnchor.constraint(equalToConstant: 40),
             
             // 일기 작성란
             review.topAnchor.constraint(equalTo: reviewLabel.bottomAnchor, constant: 15),
             review.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             review.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
-            review.heightAnchor.constraint(equalToConstant: 150),
+            review.heightAnchor.constraint(lessThanOrEqualToConstant: 200),
             
             // 일기 글자수 제한 표시
-            textCounter.topAnchor.constraint(equalTo: review.bottomAnchor, constant: 128),
+            textCounter.topAnchor.constraint(lessThanOrEqualTo: review.bottomAnchor, constant: 170),
             textCounter.leadingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -52),
             textCounter.widthAnchor.constraint(equalToConstant: 50),
             textCounter.heightAnchor.constraint(equalToConstant: 20),
+            
+            // label
+            emoLabel.topAnchor.constraint(equalTo: review.bottomAnchor, constant: 33),
+            emoLabel.bottomAnchor.constraint(equalTo: photoLabel.topAnchor, constant: -33),
             
             // 이모지 아이콘
             emoji.widthAnchor.constraint(equalToConstant: 22),

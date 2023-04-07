@@ -210,13 +210,14 @@ class CalendarView :  UIView {
             calendar.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             calendar.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             calendar.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            calendar.heightAnchor.constraint(equalToConstant: 400),
+            calendar.heightAnchor.constraint(lessThanOrEqualToConstant: 470),
             
             // 일기 카드
             stackView2.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15),
             stackView2.topAnchor.constraint(equalTo: calendar.bottomAnchor, constant: 30),
             stackView2.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15),
             stackView2.bottomAnchor.constraint(equalTo: shadow3.topAnchor, constant: -5),
+            stackView2.heightAnchor.constraint(greaterThanOrEqualToConstant: 80),
             
             emoji.widthAnchor.constraint(equalToConstant: 35),
             emoji.heightAnchor.constraint(equalToConstant: 35),
